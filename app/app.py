@@ -208,6 +208,31 @@ weather_words = [
 global words
 words = food_words + general_words + city_words + weather_words
 
+global driver_license_words
+
+driver_license_words = [
+    {"abendlicht": "low beams"},
+    {"fernlicht": "high beams"},
+    {"blinklicht": "turn signal"},
+    {"bremslicht": "brake light"},
+    {"rücklicht": "reverse light"},
+    {"rückstrahler": "reflector"},
+    {"bremslicht": "brake light"},
+    {"motor kühlmittelkontrolle": "engine coolant check"},
+    {"motor kühlwasser": "engine coolant"},
+    {"scneiben wasser": "windshield washer"},
+    {"keine beschädigung": "no damage"},
+    {"reifen lüftdruck": "tire pressure"},
+    {"reifen profil": "tire profile"},
+    {"motor öl kontrolle": "engine oil check"},
+    {"kennzeichenlicht": "license plate light"},
+    {"nebelschlussleuchte": "fog light"},
+    {"warnblinklicht": "hazard light"},
+    {"hupe": "horn"},
+    {"standlicht": "parking light"},
+    {"gefahrbremsung": "emergency stop"},
+]
+
 
 cookie_consent = HTML(
     """
@@ -231,6 +256,9 @@ app_ui = ui.page_bootstrap(
         ui.column(
             4,
             ui.h2("Vocabulary Builder"),
+            ui.input_select(
+                "word_collection", "Word Collection", ["General", "Driver License"]
+            ),
             ui.input_switch("en_de", "[🇬🇧 EN] -> [🇩🇪 DE]"),
             ui.card(
                 ui.output_ui("translation_direction"),
@@ -255,6 +283,7 @@ app_ui = ui.page_bootstrap(
 
 # Part 2: server ----
 def server(input, output, session):
+    wordlist = reactive.Value(words)
     word_pick = reactive.Value(random.choice(words))
     show_result = reactive.Value(False)
 
@@ -278,7 +307,7 @@ def server(input, output, session):
         def new_word():
             if input.get_new_word:
                 try:
-                    the_pair = random.choice(words)
+                    the_pair = random.choice(wordlist.get())
                     word_pick.set(the_pair)
                     show_result.set(False)
                     input.show_translation._value = 0
@@ -320,6 +349,14 @@ def server(input, output, session):
                 return ui.card_header("🇬🇧 EN -> 🇩🇪 DE")
             else:
                 return ui.card_header("🇩🇪 DE -> 🇬🇧 EN")
+
+    @reactive.Effect
+    @reactive.event(input.word_collection, ignore_none=False)
+    def _():
+        if input.word_collection() == "General":
+            wordlist.set(words)
+        elif input.word_collection() == "Driver License":
+            wordlist.set(driver_license_words)
 
 
 # Combine into a shiny app.

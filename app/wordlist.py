@@ -198,4 +198,29 @@ weather_words = [
     ]
 ]
 
+driver_license_words = [
+    [
+        {"abendlicht": "low beams"},
+        {"fernlicht": "high beams"},
+        {"blinklicht": "turn signal"},
+        {"bremslicht": "brake light"},
+        {"rücklicht": "reverse light"},
+        {"rückstrahler": "reflector"},
+        {"bremslicht": "brake light"},
+        {"motor kühlmittelkontrolle": "engine coolant check"},
+        {"motor kühlwasser": "engine coolant"},
+        {"scneiben wasser": "windshield washer"},
+        {"keine beschädigung": "no damage"},
+        {"reifen lüftdruck": "tire pressure"},
+        {"reifen profil": "tire profile"},
+        {"motor öl kontrolle": "engine oil check"},
+        {"kennzeichenlicht": "license plate light"},
+        {"nebelschlussleuchte": "fog light"},
+        {"warnblinklicht": "hazard light"},
+        {"hupe": "horn"},
+        {"standlicht": "parking light"},
+        {"gefahrbremsung": "emergency stop"},
+    ]
+]
+
 words = food_words + general_words + city_words + weather_words
